@@ -1,0 +1,100 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lalezar">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .marker {
+  background-image: url('http://icons.iconarchive.com/icons/paomedia/small-n-flat/64/map-marker-icon.png');
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  /*border-radius: 50%;*/
+  cursor: pointer;
+}
+.mapboxgl-popup {
+  max-width: 800px;
+}
+
+.mapboxgl-popup-content {
+  text-align: right;
+  font-family: 'Lalezar', serif;;
+}
+
+
+
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFoYW5tZWhydmFyeiIsImEiOiJ6SDdSWldRIn0.8zUNm01094D1aoSeHpWYqA';
+mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.1/mapbox-gl-rtl-text.js');
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v9',
+  center: [51.3381,35.7000],
+  zoom: 15
+});
+
+// code from the next step will go here!
+var geojson = {
+  type: 'FeatureCollection',
+  features: [{
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [51.3381,35.6997]
+    },
+    properties: {
+      title: 'برج آزادی',
+      description: '<img width="400px" height="auto" scrolling="no" frameborder="no" src="http://orujtravel.com/wp-content/uploads/2015/10/Azadi-Tower-7.jpg"></img>'
+    }
+  }]
+};
+// add markers to map
+geojson.features.forEach(function(marker) {
+
+  // create a HTML element for each feature
+  var el = document.createElement('div');
+  el.className = 'marker';
+
+  // make a marker for each feature and add to the map
+  new mapboxgl.Marker(el, { offset: [-32, -32] })
+    //new mapboxgl.Marker(el)
+
+  
+  .setLngLat(marker.geometry.coordinates)
+  .setPopup(new mapboxgl.Popup({ offset: 20 }) // add popups
+  .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+  .addTo(map);
+});
+
+</script>
+
+</body>
+</html>
+
